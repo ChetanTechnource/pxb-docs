@@ -27,7 +27,6 @@ $ xtrabackup --prepare --target-dir=/data/backup/mysql/
 For all modes, the default options are read from the xtrabackup and
 mysqld configuration groups from the following files in the given order:
 
-
 1. `/etc/my.cnf`
 
 
@@ -598,7 +597,14 @@ Usage: `--lock-ddl`
 
 Enabled by default to ensure that any DDL event does not corrupt the backup. Any DML events continue to occur. A DDL lock protects table and view definitions.
 
-If the option is disabled, a backup continues while concurrent DDL events are executed. These backups are invalid and fail in the Prepare step.
+The available values are the following:
+
+|Option| Description|
+|`--lock-ddl=ON`| The backup lock is enabled and is taken at the beginning of the backup.|
+|`--lock-ddl=OFF`|The backup lock is not taken.|
+|`--lock-ddl=REDUCED`|This option value is a [tech preview](./glossary.md#tech-preview). The option value has been added in [Percona XtraBackup 8.4.0-2](./release-notes/8.4.0-2.md) to reduce the time the instance remains under backup lock. The backup lock is taken after copying the `.ibd` files and before copying the `non-InnoDB` files.|
+
+If the backup lock is disabled with the `--lock-ddl=OFF` option, a backup continues while concurrent DDL events are executed. These backups may be invalid and may fail at either the `backup` or the `--prepare` step.
 
 Use a [safe-slave-backup](#safe-slave-backup) option to stop a SQL replica thread before copying the InnoDB files.
 
@@ -606,10 +612,9 @@ Use a [safe-slave-backup](#safe-slave-backup) option to stop a SQL replica threa
 
 Usage: `--lock-ddl-per-table`
 
-Deprecated. Use the [`–lock-ddl`](#lock-ddl) option instead
+Deprecated in Percona XtraBackup 8.0. Use the [`–lock-ddl`](#lock-ddl) option instead
 <!--26-1-24-->
-Lock DDL for each table before xtrabackup starts to copy
-it and until the backup is completed.
+Lock DDL for each table before xtrabackup starts to copy it and until the backup is completed.
 
 ### lock-ddl-timeout
 

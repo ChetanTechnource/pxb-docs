@@ -159,6 +159,7 @@ nav:
         - lru-dump-backup.md
         - throttling-backups.md
         - store-backup-history.md
+        - reduction-in-locks.md
       - Prepare features:
         - dictionary-cache.md
       - Restore features:
@@ -166,7 +167,6 @@ nav:
         - restore-individual-tables.md
       - flush-tables-with-read-lock.md
       - log-enhancements.md
-      - lock-options.md
       - smart-memory-estimation.md
       - working-with-binary-logs.md
   - Binaries:
